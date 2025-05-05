@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BackOffice\UserController;
 use App\Http\Controllers\BackOffice\OfferController;
 use App\Http\Controllers\BackOffice\AdminRoleController;
+use App\Http\Controllers\BackOffice\CandidateController;
 
 
 
@@ -35,6 +36,21 @@ Route::group([
     Route::delete('/offers/{id}', [OfferController::class, 'destroy']);
 
     // ... other back-office routes
+
+
+
+
+    
+
+    Route::get('candidates', [CandidateController::class,'index']);
+
+    Route::middleware(['auth:api','role:admin'])
+     ->get('backoffice/candidates', [CandidateController::class, 'index']);
+
+
+
+   
+
 });
  
 Route::post('/register', [AuthController::class, 'register']);
