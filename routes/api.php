@@ -1,11 +1,15 @@
 <?php
+use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BackOffice\UserController;
-use App\Http\Controllers\BackOffice\OfferController;
+
 use App\Http\Controllers\BackOffice\AdminRoleController;
 use App\Http\Controllers\BackOffice\CandidateController;
+use App\Http\Controllers\Api\EmployerController;
+use App\Http\Controllers\Api\ModuleController;
+
 
 
 
@@ -29,13 +33,22 @@ Route::group([
     Route::delete('/users/{id}', [UserController::class, 'destroy']);
 
     // Offers
-    Route::get('/offers', [OfferController::class, 'index']);
-    Route::get('/offers/{id}', [OfferController::class, 'show']);
-    Route::post('/offers', [OfferController::class, 'store']);
-    Route::put('/offers/{id}', [OfferController::class, 'update']);
-    Route::delete('/offers/{id}', [OfferController::class, 'destroy']);
+   
+
+    Route::middleware('auth:api')->group(function () {
+      Route::post('module',                    [ModuleController::class, 'index']);
+      Route::post('module/save',               [ModuleController::class, 'store']);
+      Route::get('module/{id}',                [ModuleController::class, 'show']);
+      Route::post('module/{id}/update',        [ModuleController::class, 'update']);
+      Route::delete('module/{id}',             [ModuleController::class, 'destroy']);
+      Route::post('module/change_status/{id}', [ModuleController::class, 'changeStatus']);
+  });
+  
 
     // ... other back-office routes
+
+
+    Route::middleware('auth:api')->apiResource('employers', EmployerController::class);
 
 
 
